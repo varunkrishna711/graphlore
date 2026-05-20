@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "input_entropy_score": "high",
+    "primary_genre": "Urban Fantasy / Supernatural Suspense",
+    "target_format": "Interactive Fiction Novel / RPG Quest Outline"
+  },
+  "world_building": {
+    "setting_name": "St. Jude’s Academy Exhibition Grounds",
+    "description": "A bustling, seemingly normal school science exhibition that transforms into a high-stakes survival arena under specific conditions.",
+    "environmental_rules": [
+      "The exhibition space loops infinitely if the exits are approached without an active anchor.",
+      "Creatures manifest physically based on the subconscious desires and memories of the attendees."
+    ]
+  },
+  "entities": [
+    {
+      "name": "The Confectioner / Ice-Cream Vendor",
+      "type": "Neutral-Antagonist NPC",
+      "description": "An anomalous figure serving neon-colored ice cream. The flavors alter the emotional state of whoever eats them, lowering their guard to nearby threats.",
+      "narrative_function": "Acts as the environmental trap that induces the initial state of danger."
+    },
+    {
+      "name": "Subconscious Manifestations (The 'Pokemon' Element)",
+      "type": "Creature / Threat Vector",
+      "description": "Creatures resembling childhood pocket monsters, but warped with surreal, organic textures. They shift from docile pets to predatory threats when the lights dim.",
+      "narrative_function": "Serves as the primary physical conflict and combat element for the protagonist."
+    }
+  ],
+  "narrative_architecture": {
+    "inciting_incident": "The protagonist eats a specific flavor of ice cream at the school exhibition, causing the crowds to vanish and the environment to distort.",
+    "three_act_structure": {
+      "act_1_setup": "Exploring the vibrant school exhibition, enjoying ice cream, and discovering a rare, creature-collecting exhibit.",
+      "act_2_confrontation": "The environment shifts. The collected creatures turn hostile. The protagonist realizes they are trapped inside a closed spatial loop with escalating environmental dangers.",
+      "act_3_resolution": "Using the specific properties of the ice-cream cart's freezing mechanism to neutralize the alpha creature and break the loop to return to the real school."
+    }
+  },
+  "continuity_check": {
+    "requires_human_intervention": false,
+    "logic_reconciliation": "The 'Pokemon' reference was abstracted into 'Subconscious Manifestations' to protect intellectual property and fit a darker urban fantasy tone."
+  }
+}

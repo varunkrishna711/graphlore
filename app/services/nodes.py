@@ -3,6 +3,9 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from app.core.schemas import NarrativeOutput
 
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables from .env file
+
 # Initialize Gemini Model (Using native json_schema constraints)
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.7)
 structured_llm = llm.with_structured_output(NarrativeOutput, method="json_schema")
@@ -31,8 +34,13 @@ def architect_node(state: dict) -> dict:
     
     architect_prompt = ChatPromptTemplate.from_messages([
         ("system", "You are an elite narrative designer. Take the incoming chaotic elements "
-                   "and map them perfectly into the required structured database schema."),
-        ("user", "Cleaned Concepts: {clean_input}")
+                   "and map them perfectly into the required structured database schema.\n\n"
+                   "CRITICAL INSTRUCTIONS:\n"
+                   "1. Do NOT return default placeholders, 'Undefined', empty lists, or generic templates.\n"
+                   "2. Even if the input text contains only a few disjointed or random words, you MUST weave them "
+                   "together into a highly imaginative, cinematic, and cohesive story concept.\n"
+                   "3. Fill out every single Pydantic field fully with rich, high-quality world-building data."),
+        ("user", "Cleaned Concepts to synthesize into a story: {clean_input}")
     ])
     
     chain = architect_prompt | structured_llm
