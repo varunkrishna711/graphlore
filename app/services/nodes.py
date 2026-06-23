@@ -39,7 +39,13 @@ def architect_node(state: dict) -> dict:
                    "1. Do NOT return default placeholders, 'Undefined', empty lists, or generic templates.\n"
                    "2. Even if the input text contains only a few disjointed or random words, you MUST weave them "
                    "together into a highly imaginative, cinematic, and cohesive story concept.\n"
-                   "3. Fill out every single Pydantic field fully with rich, high-quality world-building data."),
+                   "3. Adapt your tone completely to match the natural intent of the input words (e.g., if the input is lighthearted, build a comedy/slice-of-life; if historical, build a period piece; if mysterious, build a thriller).\n"
+                   "4. Fill out every single Pydantic field fully with rich, high-quality world-building data."
+                   "CRITICAL INSTRUCTIONS FOR CINEMA TRAILER SPECS:\n"
+                   "5. Generate exactly 3 scenes inside 'cinema_trailer_specs.scenes' matching Act 1, Act 2, and Act 3 sequentially.\n"
+                   "6. Each 'visual_description' MUST be a highly detailed, descriptive camera prompt optimized for an AI image generator (like Midjourney or Google Imagen).\n"
+                   "7. Specify clear camera movement/framing (e.g., wide tracking shot, hyper-realistic close-up), distinct lighting keys (e.g., cinematic volumetric haze, "
+                   "moody neon cyberpunk glow, dramatic sunset reflections), and tangible environmental action. Focus entirely on physical descriptions, avoid abstract or emotional phrasing."),
         ("user", "Cleaned Concepts to synthesize into a story: {clean_input}")
     ])
     
