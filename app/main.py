@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
 from app.api.v1.structure import router as v1_structure_router
 
@@ -13,6 +14,9 @@ app = FastAPI(
 
 # Mount the v1 API routes onto the router root prefixes
 app.include_router(v1_structure_router, prefix="/api/v1", tags=["Creative Ingestion Engine"])
+
+os.makedirs("static/storyboards", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Resolve the absolute path to your index.html file
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

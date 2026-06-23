@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Security
+from fastapi import APIRouter, HTTPException, Depends, Security, BackgroundTasks
 from fastapi.security import APIKeyHeader
 from app.core.schemas import NarrativeInput, NarrativeOutput
 from app.core.config import settings
 from app.services.graph import compiled_engine
+from app.services.media_worker import generate_trailer_storyboard_background
 
 router = APIRouter()
 
@@ -25,17 +26,22 @@ def validate_b2b_client(api_key: str = Security(API_KEY_HEADER)) -> str:
 )
 async def process_raw_narrative(
     payload: NarrativeInput, 
+    background_tasks: BackgroundTasks,
     _auth: str = Depends(validate_b2b_client)
 ):
     try:
-        # Prepare the initial memory state dictating graph input variables
         initial_state = {"raw_text": payload.raw_text}
-        
-        # Invoke the multi-agent graph asynchronously
         execution_result = await compiled_engine.ainvoke(initial_state)
-        
-        # Extract and return the strictly validated Pydantic model payload
-        return execution_result["final_payload"]
+        final_payload = execution_result.get("final_payload")
+
+        story_dict = final_payload.model_dump()
+
+        background_tasks.add_task(
+            generate_trailer_storyboard_background, 
+            story_dict,
+            "static/storyboards"
+        )
+        return final_payload
         
     except KeyError as ke:
         raise HTTPException(
