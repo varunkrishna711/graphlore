@@ -7,22 +7,22 @@ export default function StoryComposer({
   status,
 }) {
   return (
-    <section className="rounded-[2rem] border border-zinc-200 bg-white/95 p-6 shadow-sm shadow-zinc-200/40 dark:border-zinc-800 dark:bg-zinc-950/95 dark:shadow-black/10">
+    <section className="glass-panel rounded-[2rem] p-8 shadow-2xl">
       <div className="space-y-3">
-        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-600">
+        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-indigo-400">
           Narrative intake
         </p>
-        <h2 className="text-2xl font-semibold text-zinc-950 dark:text-white">
+        <h2 className="text-2xl font-bold text-white">
           Send raw story ideas to the GraphLore pipeline.
         </h2>
-        <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+        <p className="text-sm leading-6 text-zinc-400">
           The backend will sanitize the input, build a structured plot, and
           generate storyboard visuals for the strongest scenes.
         </p>
       </div>
 
-      <form className="mt-6 space-y-4" onSubmit={onSubmit}>
-        <label className="block text-sm text-zinc-700 dark:text-zinc-200">
+      <form className="mt-6 space-y-5" onSubmit={onSubmit}>
+        <label className="block text-sm text-zinc-200">
           <span className="mb-2 block font-medium">
             Story ideas or raw plot notes
           </span>
@@ -31,13 +31,13 @@ export default function StoryComposer({
             onChange={(event) => onFieldChange("rawText", event.target.value)}
             rows={7}
             placeholder="Add a chaotic brainstorm, a dream fragment, or a loose set of story concepts..."
-            className="w-full rounded-3xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-sky-400 dark:focus:ring-sky-500/20"
+            className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-100 outline-none transition placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
             required
           />
         </label>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <label className="block text-sm text-zinc-700 dark:text-zinc-200">
+          <label className="block text-sm text-zinc-200">
             <span className="mb-2 block font-medium">Client identifier</span>
             <input
               value={formValues.clientId}
@@ -45,39 +45,39 @@ export default function StoryComposer({
                 onFieldChange("clientId", event.target.value)
               }
               placeholder="client_001"
-              className="w-full rounded-3xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-sky-400 dark:focus:ring-sky-500/20"
+              className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-100 outline-none transition placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
               required
             />
           </label>
 
-          <label className="block text-sm text-zinc-700 dark:text-zinc-200">
+          <label className="block text-sm text-zinc-200">
             <span className="mb-2 block font-medium">GraphLore token</span>
             <input
               type="password"
               value={formValues.token}
               onChange={(event) => onFieldChange("token", event.target.value)}
               placeholder="Paste your backend token"
-              className="w-full rounded-3xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-900 outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:focus:border-sky-400 dark:focus:ring-sky-500/20"
+              className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/40 px-4 py-3 text-sm text-zinc-100 outline-none transition placeholder-zinc-500 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
               required
             />
           </label>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-4 pt-2">
           <button
             type="submit"
             disabled={isLoading}
-            className="rounded-full bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="rounded-full bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_20px_rgba(99,102,241,0.25)] transition hover:bg-indigo-700 hover:shadow-[0_0_25px_rgba(99,102,241,0.45)] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isLoading ? "Processing..." : "Transform into story structure"}
           </button>
-          <span className="text-sm text-zinc-500 dark:text-zinc-400">
+          <span className="text-sm font-mono text-indigo-300">
             {status}
           </span>
         </div>
 
         {error ? (
-          <div className="rounded-3xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700 dark:border-rose-900/70 dark:bg-rose-950/30 dark:text-rose-300">
+          <div className="rounded-2xl border border-rose-900/50 bg-rose-950/20 p-4 text-sm text-rose-300">
             {error}
           </div>
         ) : null}

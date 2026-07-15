@@ -13,7 +13,7 @@ const initialFormValues = {
   token: "",
 };
 
-export default function GraphLoreDashboard() {
+export default function GraphLoreDashboard({ onBackToLanding }) {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [story, setStory] = useState(null);
   const [images, setImages] = useState([]);
@@ -77,8 +77,12 @@ export default function GraphLoreDashboard() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col gap-8 bg-zinc-50 px-6 py-10 text-zinc-950 dark:bg-black dark:text-zinc-100 sm:px-10 lg:px-14">
-      <DashboardHeader />
+    <div className="relative flex min-h-screen flex-col gap-8 bg-zinc-950 px-6 py-10 text-zinc-100 grid-bg sm:px-10 lg:px-14">
+      {/* Background Floating Orbs */}
+      <div className="pointer-events-none absolute top-[-5%] left-[-5%] h-[400px] w-[400px] rounded-full bg-indigo-500/5 blur-[100px]" />
+      <div className="pointer-events-none absolute bottom-[-5%] right-[-5%] h-[500px] w-[500px] rounded-full bg-violet-600/10 blur-[120px]" />
+
+      <DashboardHeader onBackToLanding={onBackToLanding} />
 
       <StoryComposer
         formValues={formValues}
