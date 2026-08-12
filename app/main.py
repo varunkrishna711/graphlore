@@ -6,6 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
 from app.api.v1.structure import router as v1_structure_router
+from app.api.v1.auth import router as v1_auth_router
 
 # Initialize the global application gateway instance
 app = FastAPI(
@@ -16,6 +17,7 @@ app = FastAPI(
 
 # Mount the v1 API routes onto the router root prefixes
 app.include_router(v1_structure_router, prefix="/api/v1", tags=["Creative Ingestion Engine"])
+app.include_router(v1_auth_router, prefix="/api/v1", tags=["Authorization & User Management"])
 
 app.add_middleware(
     CORSMiddleware,

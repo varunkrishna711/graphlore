@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
-
+from app.core.schemas import User, UserInDB, TokenData
 from app.core.config import settings
 
 ALGORITHM = "HS256"
@@ -14,22 +14,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/login")
-
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
-
-
-class User(BaseModel):
-    username: str
-    full_name: Optional[str] = None
-    email: Optional[str] = None
-    disabled: Optional[bool] = None
-
-
-class UserInDB(User):
-    hashed_password: str
-
 
 fake_users_db = {
     "alice": {
