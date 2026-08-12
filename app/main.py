@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
+from app.core.database import SessionLocal, create_db_and_tables
 from app.api.v1.structure import router as v1_structure_router
 from app.api.v1.auth import router as v1_auth_router
 
@@ -29,6 +30,12 @@ app.add_middleware(
 
 os.makedirs("static/storyboards", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.on_event("startup")
+def startup_event():
+    create_db_and_tables()
+
 
 # Resolve the absolute path to your index.html file
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -8,3 +8,5 @@ langgraph>=0.0.26
 python-dotenv>=1.0.1
 gunicorn>=21.2.0
 google-genai>=0.1.1
+SQLAlchemy>=2.0.0
+psycopg[binary]>=3.3

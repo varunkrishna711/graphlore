@@ -4,8 +4,12 @@ from typing import Optional
 from fastapi import Depends, Header, HTTPException, status
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from app.core.schemas import User, UserInDB, TokenData
+from sqlalchemy.orm import Session
+
 from app.core.config import settings
+from app.core.database import get_db
+from app.core.models import User as UserModel
+from app.core.schemas import User, UserInDB, TokenData
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
@@ -21,23 +25,40 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-# Demo user store (built after helper exists so it uses `get_password_hash`)
-fake_users_db = {
-    "alice": {
-        "username": "alice",
-        "full_name": "Alice Example",
-        "email": "alice@example.com",
-        "disabled": False,
-        "hashed_password": get_password_hash("secret"),
-    }
-}
+def get_user(db: Session, username: str) -> Optional[UserInDB]:
+    user_model = db.query(UserModel).filter(UserModel.username == username).first()
+    if user_model is None:
+        return None
+    return UserInDB(
+        username=user_model.username,
+        full_name=user_model.full_name,
+        email=user_model.email,
+        disabled=user_model.disabled,
+        hashed_password=user_model.hashed_password,
+    )
 
 
-def get_user(db, username: str) -> Optional[UserInDB]:
-    user_data = db.get(username)
-    if user_data:
-        return UserInDB(**user_data)
-    return None
+def create_user(
+    db: Session,
+    username: str,
+    password: str,
+    full_name: Optional[str] = None,
+    email: Optional[str] = None,
+    disabled: bool = False,
+) -> UserModel:
+    user_model = UserModel(
+        username=username,
+        full_name=full_name,
+        email=email,
+        disabled=disabled,
+        hashed_password=get_password_hash(password),
+    )
+    db.add(user_model)
+    db.commit()
+    db.refresh(user_model)
+    return user_model
+
+
 
 
 def authenticate_user(db, username: str, password: str) -> Optional[UserInDB]:
@@ -54,7 +75,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
-def get_current_user(authorization: Optional[str] = Header(None, alias="Authorization")) -> User:
+def get_current_user(
+    authorization: Optional[str] = Header(None, alias="Authorization"),
+    db: Session = Depends(get_db),
+) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -73,7 +97,7 @@ def get_current_user(authorization: Optional[str] = Header(None, alias="Authoriz
     except JWTError:
         raise credentials_exception
 
-    user = get_user(fake_users_db, token_data.username)
+    user = get_user(db, token_data.username)
     if user is None:
         raise credentials_exception
     return user
