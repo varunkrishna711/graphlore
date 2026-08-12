@@ -1,7 +1,8 @@
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
+from app.core.schemas import LoginRequest
+from pydantic import BaseModel
 
 from app.core.auth import (
     User,
@@ -16,7 +17,7 @@ router = APIRouter()
 
 
 @router.post("/login", summary="Authenticate user and return a JWT token")
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(form_data: LoginRequest):
     user = authenticate_user(fake_users_db, form_data.username, form_data.password)
 
     if not user:
